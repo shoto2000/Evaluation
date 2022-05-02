@@ -3,18 +3,25 @@
 var matchesData = JSON.parse(localStorage.getItem("schedule"));
 
 
-document.querySelector("#filterVenue").addEventListener("change",changeFun);
+document.querySelector("#filterVenue").addEventListener("change", changeFun);
 display(matchesData);
 
-function changeFun(){
+function changeFun() {
     var selected = document.querySelector("#filterVenue").value;
-    var filteredList = matchesData.filter(function(el){
-        return el.mvenue == selected;
-    });
-    display(filteredList)
+    if (selected == "none") {
+        display(matchesData);
+    }
+    else {
+        var filteredList = matchesData.filter(function (el) {
+            return el.mvenue == selected;
+        });
+        display(filteredList)
+    }
+
 }
 
 function display(data) {
+    document.querySelector("tbody").innerHTML = "";
     data.forEach(function (el) {
         var tr = document.createElement("tr");
 
@@ -35,13 +42,13 @@ function display(data) {
 
         var td6 = document.createElement("td");
         td6.innerText = "Add as Favourites";
-        td6.addEventListener("click",function(){
+        td6.addEventListener("click", function () {
             addFav(el);
         })
         td6.style.color = "green";
         td6.style.cursor = "pointer";
 
-        tr.append(td1,td2,td3,td4,td5,td6);
+        tr.append(td1, td2, td3, td4, td5, td6);
 
         document.querySelector("tbody").append(tr);
     })
@@ -51,7 +58,7 @@ function display(data) {
 
 var favouriteArr = JSON.parse(localStorage.getItem("favourites")) || [];
 
-function addFav(el){
+function addFav(el) {
 
     favouriteArr.push(el);
     localStorage.setItem("favourites", JSON.stringify(favouriteArr));
